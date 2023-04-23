@@ -1,16 +1,36 @@
 import React from 'react'
-import { Sidebar, Menu, MenuItem, SubMenu, menuClasses} from 'react-pro-sidebar';
-import {BsFillHouseLockFill,BsSignal, BsQuestionCircle } from "react-icons/bs";
+import { Sidebar, Menu, MenuItem} from 'react-pro-sidebar';
+import {BsHouse, BsToggles, BsQuestionCircle, BsSend, BsFingerprint,BsFillPersonFill} from "react-icons/bs";
+import 'bootstrap/dist/css/bootstrap.css';
+import './sidebar.css';
 
 export const Sideb = () => {
   return (
-<div style={{ display: 'flex', height: '100%', minHeight: '1000px'}}>
-  <Sidebar image="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/b9a21791534383.5e341720a5140.jpg" >
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-           <div style={{ flex: 1, marginBottom: '32px' }}>
+<div  style={{ display: 'flex', height: '100%', minHeight: '1000px', overflowY:'hidden'}}>
+  <Sidebar defaultCollapsed backgroundColor='#000000'>
+    <Menu>
+    <MenuItem disabled label="LOGO" icon={<BsSend style={{ color: 'grey', width:'50px', height:'35px'}}/>} ></MenuItem>
+    <MenuItem disabled style={{fontSize: '8px'}}>SAFESEND</MenuItem>
+    </Menu>
 
-          </div>
+    <div style={{ flex: 1, marginBottom: '100px'}}>
+
     </div>
+
+    <Menu>
+      <MenuItem  label="HOME" icon={<BsHouse style={{ color: 'grey', width:'40px', height:'20px'}}  />} ></MenuItem>
+      <MenuItem  label="Info" icon={<BsFingerprint style={{ color: 'grey', width:'40px', height:'20px'}}  />} > </MenuItem>
+      <MenuItem  label="Settings" icon={<BsToggles style={{ color: 'grey', width:'40px', height:'20px'}}  />} ></MenuItem>
+      <MenuItem  label="Info" icon={<BsQuestionCircle style={{ color: 'grey', width:'40px', height:'20px'}}  />} > </MenuItem>
+    </Menu>
+
+    <div style={{ flex: 1, marginBottom: '335px'}}>
+
+    </div>
+
+    <Menu>
+      <MenuItem  label="HOME" icon={<BsFillPersonFill style={{ color: 'grey', width:'40px', height:'40px'}}  />} ></MenuItem>
+    </Menu>
   </Sidebar>
 </div>
   )
