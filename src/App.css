@@ -1,3 +1,56 @@
 body {
     overflow: hidden;
 }
+
+.sidebar
+{
+    float: left;
+}
+
+
+.chatlist
+{
+    scroll-padding: 10px;
+    float: left;
+    width: 30%;
+    margin-right: 1%;
+}
+
+.list
+{
+    overflow: auto;
+    color: aliceblue;
+    background-color: black;
+    min-height: 1000px;
+}
+
+.chatcard
+{
+   padding: 1%;
+}
+
+.chatcard:hover
+{
+   padding: 0.7%;
+}
+
+.profilephoto
+{
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.chat
+{
+    background-image: url("https://governmentciomedia.com/sites/default/files/2018-03/abstract-world-map-with-digital-binary-continents-cities-and-in-the-vector-id862773366.jpg");
+    min-height: 1000px;
+    min-width: 1000px;
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(3px);
+    margin-left: 35%;
+}
