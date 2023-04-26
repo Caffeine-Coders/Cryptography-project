@@ -4,11 +4,13 @@ import { Home } from '../home/Home';
 import { CoverPage } from '../cover/Cover';
 import { Intro } from '../infopage/intro';
 import { LoginPage } from '../login/login';
+import { Encryption } from '../ecc/encryption';
 
 export default function Path() {
   return (
     <BrowserRouter>
         <Routes>
+          <Route path="/enc" element={<Encryption/>}/>
           {/* intro contains the ecc information page */}
           <Route path="/intro" element={<Intro/>}/>
           <Route path='/login' element={<LoginPage/>}/>
