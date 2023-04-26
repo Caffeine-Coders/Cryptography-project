@@ -57,7 +57,7 @@ export const Chat = ({currentuser}) => {
 
       }
       getMessgeData()
-    }, [messageData])
+    }, [selectedemail, messageInputValue, messageData])
 
     // console.log(allusers)
 
@@ -65,8 +65,8 @@ export const Chat = ({currentuser}) => {
       if(searchinput)
       {
         let str = user.data()?.fullname?.toLowerCase();
-        let searchInputLower = searchinput.toLowerCase(); 
-        if(str && str.includes(searchinput))
+        let searchInputLower = searchinput?.toLowerCase(); 
+        if(str && str.includes(searchInputLower))
         {
           return user
         }
