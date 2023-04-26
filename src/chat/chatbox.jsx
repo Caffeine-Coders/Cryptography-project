@@ -3,6 +3,7 @@ import {ChatContainer, Avatar, ConversationHeader, MessageInput} from  "@chatsco
 import { Message, MessageList, MessageSeparator, TypingIndicator } from '@chatscope/chat-ui-kit-react'
 import {orderBy, query, Timestamp } from 'firebase/firestore';
 import { setDoc, addDoc, collection, db, doc, getDocs} from '../auth/firebaseconfig';
+import { async } from '@firebase/util';
 
 export const Chatbox = (props) => {
     const [messageInputValue, setMessageInputValue] = useState("");
@@ -14,26 +15,26 @@ export const Chatbox = (props) => {
 
     useEffect(() => 
     {
-      const getMessgeData = async ()=>{
+      const getMessgeData = async () =>{
         const datacollect =  collection(db, 'chats')
         const docRef = doc(datacollect, selectedemail)
         const messageCollection = collection(docRef, 'messages');
         const qu = query(messageCollection, orderBy('timestamp', 'asc'));
         const usersnapshot = await getDocs(qu);
 
-        const list = usersnapshot.docs.map((doc) => doc.data())
+        const list =  usersnapshot.docs.map((doc) => doc.data())
         let newmessage = list.filter((message) => 
           message.senderemail === (currentuser.email || selectedemail) ||
           message.recievername === (currentuser.email || selectedemail)
         );
-        // console.log(newmessage)
+        console.log(newmessage)
         setMessageData(newmessage)
 
       }
       getMessgeData()
     }, [])
 
-    // console.log("messagedata >>>>> ",messageData)
+    console.log("messagedata >>>>> ",messageData)
 
     const send = (e) =>
     {
@@ -51,15 +52,12 @@ export const Chatbox = (props) => {
         const docRef = doc(usercollection, currentuser.email)
         const messageCollection = collection(docRef, 'messages');
         
-        addDoc(
-          messageCollection, 
-          {
-            text:messageInputValue,
-            senderemail:currentuser.email,
-            recievername: selectedemail,
-            timestamp: Timestamp.now()
-          }
-          )
+        addDoc(messageCollection, {text:messageInputValue,
+          senderemail:currentuser.email,
+          recievername: selectedemail,
+          timestamp: Timestamp.now(),
+          direction: "incoming"
+        })
 
         //reciever
         const docRef1 = doc(usercollection, selectedemail)
@@ -68,7 +66,9 @@ export const Chatbox = (props) => {
         addDoc(messageCollection1, {text:messageInputValue,
           senderemail:currentuser.email,
           recievername: selectedemail,
-          timestamp: Timestamp.now()})
+          timestamp: Timestamp.now(),
+          direction: "outgoing"
+        })
 
 
         //friendslist :
@@ -117,7 +117,7 @@ export const Chatbox = (props) => {
             message: message.text,
             sentTime: message.timestamp,
             sender: message.senderemail,
-            direction: "outgoing",
+            direction: message.direction,
             position: "single"
              }}>
             </Message>
@@ -129,3 +129,17 @@ export const Chatbox = (props) => {
     </ChatContainer>
   )
 }
+
+
+
+
+// direction
+// "outgoing"
+// recievername
+// "bot@gmail.com"
+// senderemail
+// "skadiyala2002@gmail.com"
+// text
+// "hello"
+// timestamp
+// April 26, 2023 at 1:15:59 PM UTC-4
