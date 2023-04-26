@@ -6,7 +6,7 @@ export const Convolist = (props) => {
   return (
     <div>
         <Conversation name={name} lastSenderName={lastsendername} info={info}>
-            <Avatar src={image} name="Lilly" status="available" />
+            <Avatar src={image} status="available" />
         </Conversation>
     </div>
   )

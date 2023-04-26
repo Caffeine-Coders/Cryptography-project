@@ -4,7 +4,7 @@ import {BsHouse, BsToggles, BsQuestionCircle, BsSend, BsFingerprint,BsFillPerson
 import 'bootstrap/dist/css/bootstrap.css';
 import './sidebar.css';
 
-export const Sideb = () => {
+export const Sideb = ({currentuser, signout}) => {
   return (
 <div  style={{ display: 'flex', height: '100%', minHeight: '1000px', overflowY:'hidden'}}>
   <Sidebar defaultCollapsed backgroundColor='#000000'>
@@ -29,7 +29,8 @@ export const Sideb = () => {
     </div>
 
     <Menu>
-      <MenuItem  label="HOME" icon={<BsFillPersonFill style={{ color: 'grey', width:'40px', height:'40px'}}  />} ></MenuItem>
+      <MenuItem  label="HOME" icon={<img src= {currentuser?.photoUrl} width='40px' />} onClick = {signout}></MenuItem>
+      
     </Menu>
   </Sidebar>
 </div>
