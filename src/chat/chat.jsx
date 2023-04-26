@@ -22,7 +22,7 @@ export const Chat = ({currentuser}) => {
         setallusers(list)
        }
        getallusers()
-       
+
     },[])
 
     // console.log(allusers)
@@ -30,7 +30,8 @@ export const Chat = ({currentuser}) => {
     const searcheduser = allusers.filter((user) =>{
       if(searchinput)
       {
-        if(user.data().fullname.toLowerCase().includes(searchinput.toLowerCase()))
+        let str = user.data()?.fullname; 
+        if(str && str.includes(searchinput))
         {
           return user
         }
@@ -53,7 +54,7 @@ export const Chat = ({currentuser}) => {
 
     <MainContainer responsive>   
         <Sidebar position="left" scrollable={true}>
-            <Search placeholder="Search..." value={searchinput} onChange={e => setsearchinput(e)}/> 
+            <Search placeholder="Search..." value={searchinput} onChange={(e) => {setsearchinput(e)}}/> 
         <ConversationList>
             {
             searcheduser.length > 0 ? 
