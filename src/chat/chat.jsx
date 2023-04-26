@@ -57,7 +57,7 @@ export const Chat = ({currentuser}) => {
 
       }
       getMessgeData()
-    }, [selectedemail])
+    }, [messageData])
 
     // console.log(allusers)
 
