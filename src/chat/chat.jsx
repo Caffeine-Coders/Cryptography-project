@@ -20,7 +20,9 @@ export const Chat = ({currentuser}) => {
     const [selectedemail, setselectedemail] = useState("")
     const [selectedname, setselectedname] = useState("")
     const [selectedimage, setselectedimage] = useState("")
-    
+   
+    const [friendslist, setfriendslist] = useState([]);
+
     const [messageInputValue, setMessageInputValue] = useState("");
     const [messageData, setMessageData] = useState([])
 
@@ -37,7 +39,7 @@ export const Chat = ({currentuser}) => {
        }
        getallusers()
 
-    },[])
+    },[searchinput])
 
     useEffect(() => {
       const getMessgeData = async () =>{
@@ -58,6 +60,18 @@ export const Chat = ({currentuser}) => {
       }
       getMessgeData()
     }, [selectedemail, messageInputValue, messageData])
+
+    useEffect(()=>{
+      const getFriendslist = async () => 
+      {
+        const frienddoc = doc(friendcollection, currentuser.email)
+        const listCollection = collection(frienddoc, 'list');
+        const usersnapshot = await getDocs(listCollection)
+        const list = usersnapshot.docs.map((doc) => doc.data())
+        setfriendslist(list)
+      }
+      getFriendslist()
+    },[])
 
     // console.log(allusers)
 
@@ -163,13 +177,23 @@ export const Chat = ({currentuser}) => {
               (searcheduser.map((item) =>{
               return(
                 <div onClick={() => {setter(item.data().photoUrl, item.data().fullname, item.data().email)}}>
-                <Convolist image = {item.data().photoUrl}  name = {item.data().fullname}  lastsendername="message" info = {item.data().email}/>
+                 <Convolist image = {item.data().photoUrl}  name = {item.data().fullname}  lastsendername="message" info = {item.data().email}/>
                 </div>
               )}))
               :
               (
+                <div>
                 <div onClick={() => {setter("https://www.internetandtechnologylaw.com/files/2019/06/iStock-872962368-chat-bots-883x1000.jpg", "BOT", "bot@gmail.com")}}>
                   <Convolist image="https://www.internetandtechnologylaw.com/files/2019/06/iStock-872962368-chat-bots-883x1000.jpg" name = "BOT" lastsendername= "BOT" info = "bot@gmail.com"/>
+                </div>
+                {
+                  friendslist.map((item) => 
+                  {
+                    <div onClick={() => {setter(item.data().photoUrl, item.data().fullname, item.data().email)}}>
+                    <Convolist image = {item.data().photoUrl}  name = {item.data().fullname}  lastsendername="message" info = {item.data().email}/>
+                    </div>
+                  })
+                }
                 </div>
               )
             }
