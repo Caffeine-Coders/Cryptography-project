@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/Cryptography-project/static/css/main.68652740.css",
-    "main.js": "/Cryptography-project/static/js/main.aa5f6df1.js",
+    "main.js": "/Cryptography-project/static/js/main.e14e0588.js",
     "static/js/787.440384da.chunk.js": "/Cryptography-project/static/js/787.440384da.chunk.js",
     "static/media/lock.jpg": "/Cryptography-project/static/media/lock.bcaf60eee620134eacd0.jpg",
     "index.html": "/Cryptography-project/index.html",
     "main.68652740.css.map": "/Cryptography-project/static/css/main.68652740.css.map",
-    "main.aa5f6df1.js.map": "/Cryptography-project/static/js/main.aa5f6df1.js.map",
+    "main.e14e0588.js.map": "/Cryptography-project/static/js/main.e14e0588.js.map",
     "787.440384da.chunk.js.map": "/Cryptography-project/static/js/787.440384da.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.68652740.css",
-    "static/js/main.aa5f6df1.js"
+    "static/js/main.e14e0588.js"
   ]
 }
