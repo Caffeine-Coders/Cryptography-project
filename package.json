@@ -1,7 +1,7 @@
 {
   "name": "safesend",
   "version": "0.1.0",
-  "homepage":"https://Caffine-Coders.github.io/Cryptography-project",
+  "homepage":"https://caffeine-coders.github.io/Cryptography-project/",
   "private": true,
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.10.1",
