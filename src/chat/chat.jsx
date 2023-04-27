@@ -193,7 +193,7 @@ export const Chat = ({currentuser}) => {
 
   return (
     <div style={{
-        height: '835px',
+        height: '800px',
         position: "relative"
       }}>
 
