@@ -2,6 +2,7 @@ import React from 'react'
 import GoogleButton from 'react-google-button'
 import { useNavigate } from 'react-router-dom'
 import {db,doc, collection, setDoc, auth, googleprovider, signInWithPopup} from './firebaseconfig'
+import "./login.css"
 
 export const Login = ({setuser}) => {
   const navigate = useNavigate();
@@ -32,10 +33,21 @@ export const Login = ({setuser}) => {
   }
 
   return (
-    <div>
-        <GoogleButton
-          onClick={googlelogin}
-        />
-    </div>
+    <>
+        <h1 className='head'>SAFESEND</h1>
+        <div className="container-login">
+            <div className="wrap-login">
+                <form className="login-form">
+                    <span className="login-form-title">Printf("Hey hi...!")</span>
+                    <hr className='hrline'/>
+                    <div className='g-button-container'>
+            <GoogleButton className='g-button'
+              onClick={googlelogin}
+            />
+        </div>
+                </form>
+            </div>
+        </div>
+      </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {MainContainer, Sidebar, Search, ConversationList} from  "@chatscope/chat-ui-kit-react";
 import { Convolist } from './Convolist';
@@ -8,12 +8,19 @@ import { Message, MessageList, MessageSeparator, TypingIndicator } from '@chatsc
 import {orderBy, query, Timestamp } from 'firebase/firestore';
 import { setDoc, addDoc, doc} from '../auth/firebaseconfig';
 import { async } from '@firebase/util';
+import { Decrypt, Encrypt, genkey } from '../encrypt/ECC';
 
+function Dectemp(hexString)
+{
+  const uint8Array = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+  const string = new TextDecoder("utf-8").decode(uint8Array);
+  return string
+}
 
 export const Chat = ({currentuser}) => {
-    const [image, setImage] = useState(" ");
-    const [name, setName] = useState(" ");
-    const [info, setInfo] = useState(" ");
+    const [image, setImage] = useState("");
+    const [name, setName] = useState("");
+    const [info, setInfo] = useState("");
 
     const [allusers, setallusers] = useState([])
     const [searchinput, setsearchinput] = useState("") 
@@ -28,7 +35,19 @@ export const Chat = ({currentuser}) => {
 
     const usercollection = collection(db, 'chats')
     const friendcollection = collection(db, 'friendslist')
+
+    const firsttime = useRef(true)
+
+    const [decrypt, setdecrypted] = useState("")
     
+    const [ind, setind] = useState()
+    //encryption-decryption stuff here
+    
+    const keys = genkey();
+    const shared1 = keys.shared1;
+    const shared2 = keys.shared2;
+    
+
     useEffect(()=>{
 
       const getallusers = async () =>{
@@ -62,15 +81,21 @@ export const Chat = ({currentuser}) => {
     }, [selectedemail, messageInputValue, messageData])
 
     useEffect(()=>{
-      const getFriendslist = async () => 
+      if(firsttime.current)
       {
-        const frienddoc = doc(friendcollection, currentuser.email)
-        const listCollection = collection(frienddoc, 'list');
-        const usersnapshot = await getDocs(listCollection)
-        const list = usersnapshot.docs.map((doc) => doc.data())
-        setfriendslist(list)
+        const getFriendslist = async () => 
+        {
+          const frienddoc = doc(friendcollection, currentuser.email)
+          const listCollection = collection(frienddoc, 'list');
+          const usersnapshot = await getDocs(listCollection)
+          const list = usersnapshot.docs.map((doc) => doc.data())
+          setfriendslist(list)
+        }
+        getFriendslist()
+       
+        firsttime.current = false
       }
-      getFriendslist()
+     
     },[])
 
     // console.log(allusers)
@@ -113,7 +138,9 @@ export const Chat = ({currentuser}) => {
         const docRef = doc(usercollection, currentuser.email)
         const messageCollection = collection(docRef, 'messages');
         
-        addDoc(messageCollection, {text:messageInputValue,
+        addDoc(messageCollection, {
+          key:shared1.toString(16),
+          text:Encrypt(messageInputValue, shared1.toString(16)),
           senderemail:currentuser.email,
           recievername: selectedemail,
           timestamp: Timestamp.now(),
@@ -124,7 +151,9 @@ export const Chat = ({currentuser}) => {
         const docRef1 = doc(usercollection, selectedemail)
         const messageCollection1 = collection(docRef1, 'messages');
 
-        addDoc(messageCollection1, {text:messageInputValue,
+        addDoc(messageCollection1, {
+          key:shared2.toString(16),
+          text:Encrypt(messageInputValue, shared1.toString(16)),
           senderemail:currentuser.email,
           recievername: selectedemail,
           timestamp: Timestamp.now(),
@@ -164,7 +193,7 @@ export const Chat = ({currentuser}) => {
 
   return (
     <div style={{
-        height: '810px',
+        height: '835px',
         position: "relative"
       }}>
 
@@ -181,44 +210,58 @@ export const Chat = ({currentuser}) => {
                 </div>
               )}))
               :
-              (
-                <div>
-                <div onClick={() => {setter("https://www.internetandtechnologylaw.com/files/2019/06/iStock-872962368-chat-bots-883x1000.jpg", "BOT", "bot@gmail.com")}}>
-                  <Convolist image="https://www.internetandtechnologylaw.com/files/2019/06/iStock-872962368-chat-bots-883x1000.jpg" name = "BOT" lastsendername= "BOT" info = "bot@gmail.com"/>
+              (friendslist.map((item) =>{
+              return(
+                <div onClick={() => {setter(item.photoUrl, item.fullname, item.email)}}>
+                 <Convolist image = {item.photoUrl}  name = {item.fullname} info = {item.email}/>
                 </div>
-                {
-                  friendslist.map((item) => 
-                  {
-                    <div onClick={() => {setter(item.data().photoUrl, item.data().fullname, item.data().email)}}>
-                    <Convolist image = {item.data().photoUrl}  name = {item.data().fullname}  lastsendername="message" info = {item.data().email}/>
-                    </div>
-                  })
-                }
-                </div>
-              )
+              )}))
             }
         </ConversationList>
         </Sidebar>
 
     <ChatContainer>
     <ConversationHeader>
-                  <ConversationHeader.Back />
-                  <Avatar src={image} name={name}/>
-                  <ConversationHeader.Content userName={name} info={info} />
+      <ConversationHeader.Back />
+        <Avatar src={image} name={name}/>
+      <ConversationHeader.Content userName={name} info={info} />
+     
     </ConversationHeader>
 
     <MessageList>
         <MessageSeparator content="CHAT" />
         {
-          messageData.map((message) =>
-            <Message model={{
-            message: message.text,
-            sentTime: message.timestamp,
-            sender: message.senderemail,
-            direction: message.direction,
-            position: "single"
-             }}>
-            </Message>
+          messageData.map((message, index) =>
+          <div onClick={()=> {setind(index)}}>
+          {
+            (ind === index)?
+            (
+              <Message model={{
+                message: decrypt?decrypt:message.text,
+                sentTime: message.timestamp,
+                sender: message.senderemail,
+                direction: message.direction,
+                position: "single"
+                }} onDoubleClick={() => {setdecrypted(Decrypt(message.text,message.key))}}>
+
+             <Avatar src={message.direction == 'incoming'? selectedimage:currentuser.photoUrl} name={message.senderemail} />
+            </Message> 
+            )
+            :
+            (
+              <Message model={{
+                message: message.text,
+                sentTime: message.timestamp,
+                sender: message.senderemail,
+                direction: message.direction,
+                position: "single"
+                }} onMouseOver={()=>{setdecrypted("")}} >
+
+             <Avatar src={message.direction == 'incoming'? selectedimage:currentuser.photoUrl} name={message.senderemail} />
+            </Message> 
+            )
+          }
+          </div>
           )
         } 
     </MessageList>

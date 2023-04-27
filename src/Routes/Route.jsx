@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import { auth } from '../auth/firebaseconfig';
 import { Login } from '../auth/login';
+import { ECC, Encrypt } from '../encrypt/ECC';
 import { Home } from '../home/Home';
 
 export default function Path() {
@@ -22,7 +23,6 @@ export default function Path() {
        (
         <Routes>
           <Route path="/" element={<Home currentuser = {user} signout = {signout}/>}/>
-          <Route path="/check" element={<h1>ROUTECHECK</h1>}/>
         </Routes>
       )
       :
