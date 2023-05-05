@@ -5,11 +5,13 @@ import { CoverPage } from '../cover/Cover';
 import { Intro } from '../infopage/intro';
 import { LoginPage } from '../login/login';
 import { Encryption } from '../ecc/encryption';
+import { Encr } from '../encryption/encr';
 
 export default function Path() {
   return (
     <BrowserRouter>
         <Routes>
+          <Route path='/encr' element={<Encr/>}/>
           <Route path="/enc" element={<Encryption/>}/>
           {/* intro contains the ecc information page */}
           <Route path="/intro" element={<Intro/>}/>
