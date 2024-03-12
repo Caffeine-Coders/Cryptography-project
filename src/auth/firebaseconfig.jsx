@@ -5,11 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
 import { signInWithPopup } from 'firebase/auth';
 import { collection, doc, addDoc, updateDoc, deleteDoc, setDoc, getDocs} from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+ 
 const firebaseConfig = {
   apiKey: "AIzaSyD-If9BKSObVwvnEtwREkJvcuQqyOi3nbw",
   authDomain: "safesend-9c803.firebaseapp.com",
