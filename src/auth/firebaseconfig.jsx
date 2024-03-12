@@ -25,7 +25,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleprovider = new GoogleAuthProvider();
-const analytics = getAnalytics(app);
 
 export { auth, googleprovider, signInWithPopup};
 export {db, doc, collection, addDoc, updateDoc, deleteDoc, setDoc, getDocs};
