@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {MainContainer, Sidebar, Search, ConversationList} from  "@chatscope/chat-ui-kit-react";
 import { Convolist } from './Convolist';
 import { collection, db ,getDocs} from '../auth/firebaseconfig';
 import {ChatContainer, Avatar, ConversationHeader, MessageInput} from  "@chatscope/chat-ui-kit-react";
 import { Message, MessageList, MessageSeparator, TypingIndicator } from '@chatscope/chat-ui-kit-react'
-import {orderBy, query, Timestamp } from 'firebase/firestore';
+import { orderBy, query, Timestamp } from 'firebase/firestore';
 import { setDoc, addDoc, doc} from '../auth/firebaseconfig';
-import { async } from '@firebase/util';
 import { Decrypt, Encrypt, genkey } from '../encrypt/ECC';
 
 function Dectemp(hexString)
